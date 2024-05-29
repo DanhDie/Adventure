@@ -375,7 +375,7 @@ def Atacar():
     input("\nEnter para continuar ->\n")
 
 def Fugir():
-    global classe, esquiva
+    global classe, esquiva, vidaInimigo
     print("\nVocê tenta fugir...")
 
     destreza=random.randint(1,20)+esquiva
@@ -389,12 +389,11 @@ def Fugir():
     if(destreza>destrezaInimigo):
         print("\nVocê escapa da batalha!")
         vidaInimigo=0
+        time.sleep(2)
     else:
         print("\nParece que você não foi rápido o suficiente...")
         time.sleep(2)
         AtaqueInimigo()
-
-    input("\nEnter para continuar ->\n")
     return vidaInimigo
 
 def CriarInimigo():
@@ -516,7 +515,244 @@ def Armadilha():
         op=Combate()
         return op
     
+ #
 
+#Desafios
+
+def DanoDesafio():
+    dano = random.randint(2,7)    
+    print("\nPerde", dano, "pontos de Vida...")
+    time.sleep(3)
+
+def Desafio():
+    ApagarCs()
+    print("Você entrou numa sala de desafio!\nPrepare-se...")
+    time.sleep(2)
+    num = random.randint(1,4)
+    match num:
+        case 1:
+            DesafioMat()
+        case 2:
+            ApagarCs()
+            print("Um pequeno goblin aparece, ele parece querer jogar Pedra, Papiro e Adaga")
+            DesafioPPA()
+        case 3:
+            DesafioQNumero()
+        case 4:
+            print("\nVocê se depara com um Esqueleto numa mesa de jogos de azar, ele exige que jogue uma partida com ele...")
+            time.sleep(2)
+            print("\nO jogo se chama VINTE E UM\nO objetivo do jogo é tirar o maximo de cartas possivel sem que a soma delas seja 21 ou maior, você pode decidir se deseja parar ou pegar outra carta, os valores são de 1 até 13")
+            x = input("\nAperte ENTER se entendeu as regras ->")
+            DesafioVinteUm()
+
+def DesafioMat():
+    ApagarCs()
+    x = random.randint(10,20)
+    y = random.randint(1,30)
+    solucao = x+y
+    print("Uma estatua olha em sua direção e exige que você responda corretamente:")
+    resposta = int(input("\nQuanto é a soma de:\n\n"+str(x)+" + "+str(y)+" ?\n"))
+    if(resposta==solucao):
+        print("Resposta correta!")
+        time.sleep(3)        
+    else:
+        print("Ouch! Você errou!\n")
+        DanoDesafio()
+
+
+    ApagarCs()
+    x = random.randint(5,20)
+    y = random.randint(1,12)
+    solucao = x*y      
+    print("\nA estatua persiste e pergunta:")
+    resposta = int(input("\nQuanto é o produto de:\n\n"+str(x)+" x "+str(y)+" ?\n"))
+    if(resposta==solucao):
+        print("Resposta correta!")
+        time.sleep(3)        
+    else:
+        print("Ouch! Você errou!\n")
+        DanoDesafio()
+
+    
+    ApagarCs()
+    x = random.randint(5,20)
+    y = random.randint(1,10)
+    z = random.randint(1,10)
+    solucao = x+(y*z)      
+    print("\nA estatua persiste e pergunta:")
+    resposta = int(input("\nQual é o resultado da equação:\n\n"+str(x)+" + "+str(y)+" x "+str(z)+" ?\n"))
+    if(resposta==solucao):
+        print("Resposta correta! Você provou seu valor, siga em frente!\n")
+        time.sleep(3)        
+    else:
+        print("Seu paspalhão! SUMA DAQUI\n")
+        time.sleep(3)
+        DanoDesafio()
+
+def DesafioPPA():  
+    
+    escolha = int(input("\n1 - Pedra  |  2 - Papiro  |  3 - Adaga\n\n"))
+    goblin = random.randint(1,3)
+
+    match escolha:
+        case 1:
+            print("\nVocê faz o sinal de uma Pedra\n")
+        case 2:
+            print("\nVocê faz o sinal de um Papiro\n")
+        case 3:
+            print("\nVocê faz o sinal de uma Adaga\n")
+        case _:
+            DesafioPPA()
+    time.sleep(2)
+
+    match goblin:
+        case 1:
+            print("O goblin faz o sinal de uma Pedra\n")
+        case 2:
+            print("O goblin faz o sinal de um Papiro\n")
+        case 3:
+            print("O goblin faz o sinal de uma Adaga\n")
+    time.sleep(2)
+
+    if(escolha==goblin):
+        print("\nJoguem de novo!\n")
+        time.sleep(2)
+        ApagarCs()
+        DesafioPPA()
+    
+    elif(escolha==1):
+        if(goblin==2):
+            print("\nVocê perdeu!\n\nO goblin ri de você, pega uma pedra, taca em você e sai correndo...\n")
+            time.sleep(1)
+            DanoDesafio()
+        else:
+            print("\nVocê ganhou!\n\nO goblin sai correndo...\n")
+            time.sleep(2)
+    
+    elif(escolha==2):
+        if(goblin==3):
+            print("\nVocê perdeu!\n\nO goblin ri de você, pega uma pedra, taca em você e sai correndo...\n")
+            time.sleep(1)
+            DanoDesafio()
+        else:
+            print("\nVocê ganhou!\n\nO goblin sai correndo...\n")
+            time.sleep(2)
+    
+    elif(escolha==3):
+        if(goblin==1):
+            print("\nVocê perdeu!\n\nO goblin ri de você, pega uma pedra, taca em você e sai correndo...\n")
+            time.sleep(1)
+            DanoDesafio()
+        else:
+            print("\nVocê ganhou!\n\nO goblin sai correndo...\n")
+            time.sleep(2)
+
+def DesafioQNumero():
+    print("\nUm Gato Magico Falante aparece e te fala que tem 7 chances para acertar a pergunta:\n")
+    time.sleep(3)
+    ratos = random.randint(1,100)    
+    chance = 1
+    while(chance<=7):
+        ApagarCs()
+        chute = int(input("--- Chance "+str(chance)+" ---\n\nQuantos ratos eu comi hoje?\n"))
+        if(chute==ratos):
+            chance=10
+        elif(chute>ratos):
+            print("\nESTA FALANDO QUE SOU GORDO??? Jamais comeria tantos ratos!\n")
+            time.sleep(2)
+            print("tente um numero menor... miau")
+            time.sleep(3)
+            chance+=1
+        else:
+            print("\nO QUE??? Você acha que é facil manter meu corpo magico só com isso?!\n")
+            time.sleep(2)
+            print("tente um numero maior... miau")
+            time.sleep(3)
+            chance+=1
+        
+    ApagarCs()
+    if(chance==10):
+        print("Parabens! Você acertou exatamente minhas refeições de hoje! Vou deixar você ir! miau\n")
+        time.sleep(3)
+    else:
+        print("MEOOOWW!!! Você não tem intelecto sobre as refeições de um ser mistico como eu, não merece minha atenção...\n\nO gato te arranha e vai embora.")
+        time.sleep(4)
+        DanoDesafio()
+
+def DesafioVinteUm():    
+    rodada = 1
+    esqueleto = 0
+    vc = 0
+    escolha = 1
+    escolhaesqueleto = 1
+    while(rodada!=-1):
+        ApagarCs()
+        print("--------- VINTE UM ---------")
+        print("           Round",rodada,"\n VOCÊ =",vc," |  ESQUELETO =",esqueleto)
+        print("----------------------------")
+        if(escolha==1):
+            escolha = int(input("\nO que deseja fazer?\n\n1 - tirar uma carta  |  2 - parar de tirar\n"))
+            if(escolha==1):
+                carta=random.randint(1,13)
+                vc+=carta
+                print("\nVocê tirou",carta)
+                time.sleep(2)
+                if(vc>=21):
+                    print("\nVocê ultrapassou 21\n")
+                    time.sleep(2)
+                    rodada = -1
+                    
+        
+        if(rodada!=-1):
+            rodada+=1
+            if(esqueleto<=16):
+                carta=random.randint(1,13)
+                esqueleto+=carta
+                print("\nO esqueleto tirou",carta,"\n")
+                time.sleep(2)
+                if(esqueleto>=21):
+                    print("\nO Esqueleto ultrapassou 21\n")
+                    time.sleep(2)
+                    rodada = -1
+            elif(esqueleto<vc):
+                carta=random.randint(1,13)
+                esqueleto+=carta
+                print("\nO esqueleto tirou",carta,"\n")
+                time.sleep(2)
+                if(esqueleto>=21):
+                    print("\nO Esqueleto ultrapassou 21\n")
+                    time.sleep(2)
+                    rodada = -1
+            else:
+                print("\nO esqueleto decide parar.")
+                escolhaesqueleto+=1
+                time.sleep(2)
+            
+            if(escolha!=1 and escolhaesqueleto!=1):
+                rodada = -1
+        
+    
+    print("VOCÊ =",vc," |   ESQUELETO =",esqueleto)
+    if(vc>=21):
+        print("\nVocê Perdeu! O esqueleto deixa você ir embora...")
+        time.sleep(2)
+        print("\nMas te da uma rasteira e vc cai de cara no chão.")
+        time.sleep(2)
+        DanoDesafio()
+    elif(vc==esqueleto):
+        print("\nEmpate!\nO esqueleto quer jogar de novo!")
+        DesafioVinteUm()
+    elif(vc>esqueleto or esqueleto>=21):
+        print("\nVocê Ganhou! O esqueleto deixa você ir embora...")
+        time.sleep(2)
+    else:
+        print("\nVocê Perdeu! O esqueleto deixa você ir embora...")
+        time.sleep(2)
+        print("\nMas te da uma rasteira e você cai de cara no chão.")
+        time.sleep(2)
+        DanoDesafio()
+        
+    
 Menu()
 GerarMapa(tamanho)
 
@@ -545,6 +781,11 @@ while(op!=0 and vida>0):
         PontoSala()
         CriarInimigo()
         op=Armadilha()
+        salas[y][x]=1
+
+    if(salas[y][x]==4):
+        PontoSala()
+        Desafio()
         salas[y][x]=1
 
     else:    
