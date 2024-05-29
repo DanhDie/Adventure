@@ -42,7 +42,7 @@ def Menu():
     global tamanho
     global dificuldade
     global op
-    global vida, dt, esquiva, modificador, inteligencia, vidamax
+    global vida, dt, esquiva, modificador, inteligencia, vidamax, classe
     ApagarCs()
     print("\n-----  GAY's ADVENTURES -----\n")
     op = int(input("Preparado para aventura?\n\n0 - sair  1 - jogar  2 - como jogar\n"))
@@ -230,7 +230,6 @@ def Escudo(id):
         ApagarCs()
         print("Escudo foi equipado!")
         print("\n+2 de armadura ")
-        dt+=2
         time.sleep(3)
         escudo+=1
     
@@ -305,7 +304,6 @@ def RolandoDados(vidaAtacado, dtAtacado, dadoMaximo, modificador, dif):
     print("\nRolando dado de ataque...")
     time.sleep(1)
     print("Dado: %d!"%(dado))
-    input("\nEnter para continuar ->\n")
 
     if(dado==20):
         print("\nDano crítico!")
@@ -337,11 +335,12 @@ def RolandoDados(vidaAtacado, dtAtacado, dadoMaximo, modificador, dif):
         elif(dif==1):
             vidaInimigo=vidaInimigo-dado
         
-        return
+        return vidaAtacado
         
     else:
         print("\nErrou o ataque.")
         time.sleep(2)
+        return vidaAtacado
 
 def AtaqueInimigo():
     global vida, dt, danoInimigo, modificadorInimigo, vidaInimigo
@@ -454,7 +453,7 @@ def MenuCombate():
 
     op=int(input("\nO que você deseja fazer?\n1 - Atacar  2 - Fugir \n"))
     if(op==1):
-        Atacar(vidaInimigo, dtInimigo)
+        Atacar()
     elif(op==2):
         vidaInimigo=Fugir()
     else:
@@ -463,16 +462,18 @@ def MenuCombate():
 def Combate():
     global vidaInimigo, dtInimigo, vida
     print("Você entrou em uma batalha! É seu turno, se prepare\n")
+    print(vidaInimigo, "De vida")
     input("\nEnter para continuar ->\n")
-    
     while True:
         MenuCombate()
 
-        if not (vidaInimigo>0):
+        if not(vidaInimigo>0):
             break
-
+        
+        ApagarCs()
         print("É a vez do inimigo")
         time.sleep(2)
+        ApagarCs()
         AtaqueInimigo()
 
         if(vida<=0):
@@ -481,11 +482,11 @@ def Combate():
     print("\nVocê venceu a batalha!")
     exp=0
     if(dtInimigo>12):
-        exp+=35
+        exp=exp+35
     else:
-        exp+=20
+        exp=exp+20
     
-    print("Você recebeu %e pontos!"%(exp))
+    print("Você recebeu %d pontos!"%(exp))
     AddPontos(exp)
     input("\nEnter para continuar ->\n")
 
@@ -493,7 +494,7 @@ def Combate():
 def Armadilha():
     global vida, dt, vidaInimigo, dtInimigo, danoInimigo, modificadorInimigo, dadoMaximo, modificador
     print("\nUm baú feito de madeira, com extremidades reforçadas a aço e uma fechadura enferrujada, aparece diante de você")
-    op=int(input("\nO que deseja fazer?\n1 - Abrir o baú 2 - Atacar 3 - Sair"))
+    op=int(input("\nO que deseja fazer?\n1 - Abrir o baú 2 - Atacar 3 - Sair\n"))
 
     if(op==1):
         print("O baú revela.... UM MÍMICO, ele te ataca de surpresa")
@@ -503,12 +504,17 @@ def Armadilha():
             return 0
         
         input("\nEnter para continuar ->\n")
-        Combate()
+        op=Combate()
+        return op
     if(op==2):
         print("Sua intuição estava correta, era um MÍMICO!")
         vidaInimigo=RolandoDados(vidaInimigo, dtInimigo, dadoMaximo, modificador, 0)
+        
+        if(vidaInimigo<=0):
+            return
         input("\nEnter para continuar ->\n")
-        Combate()
+        op=Combate()
+        return op
     
 
 Menu()
