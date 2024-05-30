@@ -3,6 +3,18 @@ import math
 import os
 import time 
 
+#lista de itens
+'''"Pocao de cura"
+"Escudo"
+"Bussola de escadas"
+"Bussola de desafios"
+"Bussola de tesouros"
+"Pocao de cura maior"
+"Travesseiro aconchegante"
+"Coracao implantavel"
+"Bussola de caminho seguro"'''
+
+
 salas = []
 mapa = []
 player = "X"
@@ -12,7 +24,7 @@ dificuldade = 0
 desafio = 0
 descanso = 0 
 
-inventario = ["Pocao de cura", "Escudo", "Bussola de escadas", "Bussola de desafios", "Bussola de tesouros", "Pocao de cura maior", "Travesseiro aconchegante", "Coracao implantavel", "Bussola de caminho seguro"]
+inventario = ["Pocao de cura"]
 pontos = 0
 tipo=0
 #Variáveis de classe
@@ -20,6 +32,9 @@ classe = ""
 vida = 0
 vidamax = 0
 dt = 0
+espada = 0 
+adaga = 0
+cajado = 0
 escudo = 0
 esquiva = 0
 modificador = 0 
@@ -47,11 +62,11 @@ def Menu():
     global op
     global vida, dt, esquiva, modificador, inteligencia, vidamax, classe
     ApagarCs()
-    print("\n-----  GAY's ADVENTURES -----\n")
-    op = int(input("Preparado para aventura?\n\n0 - sair  1 - jogar  2 - como jogar\n"))
+    print("\n---  SKYRIM 2: As Aventuras de NatiGhostKiller ---\n")
+    op = int(input("Preparado para aventura?\n\n0 - sair  |  1 - jogar  |  2 - como jogar\n"))
     if(op==1):
         ApagarCs()
-        dificuldade = int(input("\nEscolha o dificuldade inicial da dungeon:\n\n1 - facil  2 - medio  3 - dificil\n"))
+        dificuldade = int(input("\nEscolha o dificuldade inicial da dungeon:\n\n1 - facil  |  2 - medio  |  3 - dificil\n"))
         if(dificuldade==1):
             tamanho = 3
         elif(dificuldade==2):
@@ -60,10 +75,10 @@ def Menu():
             tamanho = 7
         
         ApagarCs()
-        classe = int(input("\nEscolha sua classe \n\n1 - Barbaro (+DANO +VIDA)  2 - Ladino (+ESQUIVA +TESOUROS)  3 - Feiticeiro (+INTELIGENCIA +MAGIA)\n"))
+        classe = int(input("\nEscolha sua classe \n\n1 - Barbaro (+DANO +VIDA)  |  2 - Ladino (+ESQUIVA +TESOUROS)  |  3 - Feiticeiro (+INTELIGENCIA +DESAFIOS)\n"))
         if(classe==1):
             vidamax=50
-            vida = vidamax-10
+            vida = vidamax
             dt=12
             modificador=4
             inventario.append("Espada")
@@ -73,12 +88,14 @@ def Menu():
             dt=16
             esquiva = 4
             inventario.append("Adaga")
+            inventario.append("Bussola de tesouros")
         elif(classe==3):
             vidamax=25
             vida = vidamax
             dt=14
             inteligencia = 4
             inventario.append("Cajado")
+            inventario.append("Bussola de desafios")
         
         
 
@@ -144,7 +161,7 @@ def Mover():
             if(mapa[i][j]=="X"):
                 x = j
                 y = i
-    direcao = int(input("\nQual direção?\n\n1 - NORTE  2 - SUL  3 - LESTE  4 - OESTE\n"))
+    direcao = int(input("\nQual direção?\n\n1 - NORTE  |  2 - SUL  |  3 - LESTE  |  4 - OESTE\n"))
     PontoSala()
     if(direcao==1):
         if(y>0):
@@ -205,7 +222,7 @@ def MostrarInventario():
     print("\nVocê possui:",)
     for i in range(len(inventario)):
         print(i,"-",inventario[i])
-    y = int(input("\n1 - sair  2 - Usar item\n"))
+    y = int(input("\n1 - sair  |  2 - Usar item\n"))
     if(y==2):
         aux = int(input("\nDigite o numero do item que deseja usar ->\n"))
         if(aux!=''):
@@ -235,6 +252,30 @@ def UsarItem(item):
             Coracao(item)
         case "Bussola de caminho seguro":
             RevelarCam(item)
+        case "Espada":
+            ApagarCs()
+            print("Propriedades: 1d8+4 de dano")
+            time.sleep(3)
+        case "Cajado":
+            ApagarCs()
+            print("Propriedades: 1d8 de dano")
+            time.sleep(3)
+        case "Adaga":
+            ApagarCs()
+            print("Propriedades: 1d8 de dano")
+            time.sleep(3)
+        case "Espada da Forja Negra":
+            ApagarCs()
+            EspadaNegra()
+            time.sleep(3)
+        case "Adaga do Rei dos Ladrões":
+            ApagarCs()
+            AdagaRei()
+            time.sleep(3)
+        case "Cajado Celestial":
+            ApagarCs()
+            CajadoCelestial()
+            time.sleep(3)
         case _:
             print("Nada a se fazer...")
 
@@ -361,15 +402,68 @@ def RevelarCam(id):
     print("\nProcure pelos UNS, DOIS, TRES")
     time.sleep(3)
 
+def EspadaNegra():
+    global vidamax, dadoMaximo, modificador, espada
+
+    vidamax=vidamax-20
+    dadoMaximo=12
+    modificador=8
+
+    if(espada>0):
+        ApagarCs()
+        print("Item já equipado!")
+        time.sleep(3)
+    else:
+        ApagarCs()
+        print("Equipado!\nVocê sente um peso nas costas... A vontade e força de quem empunhou essa arma agora é parte de você, assim como os seus pecados também")
+        print("\nSua vida diminuiu em 20\nSeu dano máximo agora é 12\nSeu modificador agora é 8")
+        time.sleep(3)
+        espada+=1
+
+def AdagaRei():
+    global modificador, esquiva, vidamax, adaga
+
+    vidamax=vidamax-10
+    modificador=2
+    esquiva=8
+
+    if(adaga>0):
+        ApagarCs()
+        print("Item já equipado!")
+        time.sleep(3)
+    else:
+        ApagarCs()
+        print("Equipado!\nVocê sente um peso nas costas... A vontade e força de quem empunhou essa arma agora é parte de você, assim como os seus pecados também")
+        print("\nSua vida diminuiu em 10\nSua esquiva agora é 8\nSeu modificador agora é 2")
+        time.sleep(3)
+        adaga+=1
+
+def CajadoCelestial():
+    global dadoMaximo, inteligencia, vidamax, cajado
+
+    vidamax=vidamax-5
+    dadoMaximo=10
+    inteligencia=8
+
+    if(cajado>0):
+        ApagarCs()
+        print("Item já equipado!")
+        time.sleep(3)
+    else:
+        ApagarCs()
+        print("Equipado!\nVocê sente um peso nas costas... A vontade e força de quem empunhou essa arma agora é parte de você, assim como os seus pecados também")
+        print("\nSua vida diminuiu em 5\nSeu dano máximo agora é 10\nSua inteligência agora é 8")
+        time.sleep(3)
+        cajado+=1
 
 #Estatiticas
 
 def MostrarEstatisticas():
-    global dt,vida
+    global dt,vida, vidamax
     os.system('cls') or None
 
     print("\n--- STATUS ---")
-    print("   HP =",vida)
+    print("   HP =",vida,"/",vidamax)
     print("  ARMOR =",dt)    
     print("--------------\n")
 
@@ -554,12 +648,11 @@ def MenuCombate():
     elif(op==2):
         vidaInimigo=Fugir()
     else:
-        print(...)
+        print(". . .")
 
 def Combate():
     global vidaInimigo, dtInimigo, vida
     print("Você entrou em uma batalha! É seu turno, se prepare\n")
-    print(vidaInimigo, "De vida")
     input("\nEnter para continuar ->\n")
     while True:
         MenuCombate()
@@ -591,7 +684,7 @@ def Combate():
 def Armadilha():
     global vida, dt, vidaInimigo, dtInimigo, danoInimigo, modificadorInimigo, dadoMaximo, modificador
     print("\nUm baú feito de madeira, com extremidades reforçadas a aço e uma fechadura enferrujada, aparece diante de você")
-    op=int(input("\nO que deseja fazer?\n1 - Abrir o baú 2 - Atacar 3 - Sair\n"))
+    op=int(input("\nO que deseja fazer?\n1 - Abrir o baú  |  2 - Atacar  |  3 - Sair\n"))
 
     if(op==1):
         print("O baú revela.... UM MÍMICO, ele te ataca de surpresa")
@@ -611,6 +704,7 @@ def Armadilha():
             return
         input("\nEnter para continuar ->\n")
         op=Combate()
+        RecompensaBau(0)
         return op
     
  #
@@ -670,7 +764,7 @@ def DesafioMat():
 
 
     ApagarCs()
-    x = random.randint(5,20)
+    x = random.randint(2,12)
     y = random.randint(1,12)
     solucao = x*y      
     print("\nA estatua persiste e pergunta:")
@@ -883,33 +977,35 @@ def AtribuirItem(id):
     global inventario
     contador = 0
     match id:
+        case 0:
+            print("")
         case 1:
             print("\nAdquiriu uma Pocao de cura")
             inventario.append("Pocao de vida")
         case 2:
             print("\nAdquiriu um Escudo")
-            for i in len(inventario):
+            for i in range(len(inventario)):
                 if(inventario[i]=="Escudo"):
                     contador+=1
             if(contador==0):
                 inventario.append("Escudo")
         case 3:
             print("\nAdquiriu um Bussola de tesouros")
-            for i in len(inventario):
+            for i in range(len(inventario)):
                 if(inventario[i]=="Bussola de tesouros"):
                     contador+=1
             if(contador==0):
                 inventario.append("Bussola de tesouros")
         case 4:
             print("\nAdquiriu um Bussola de escadas")
-            for i in len(inventario):
+            for i in range(len(inventario)):
                 if(inventario[i]=="Bussola de escadas"):
                     contador+=1
             if(contador==0):
                 inventario.append("Bussola de escadas")
         case 5:
             print("\nAdquiriu um Bussola de desafios")
-            for i in len(inventario):
+            for i in range(len(inventario)):
                 if(inventario[i]=="Bussola de desafios"):
                     contador+=1
             if(contador==0):
@@ -919,7 +1015,7 @@ def AtribuirItem(id):
             inventario.append("Pocao de vida maior")
         case 7:
             print("\nAdquiriu um Bussola de caminho seguro")
-            for i in len(inventario):
+            for i in range(len(inventario)):
                 if(inventario[i]=="Bussola de caminho seguro"):
                     contador+=1
             if(contador==0):
@@ -930,6 +1026,30 @@ def AtribuirItem(id):
         case 9:
             print("\nConseguiu um Coracao implantavel")
             inventario.append("Coracao implantavel")
+        case 10:
+            for i in range(len(inventario)):
+                if(inventario[i]=="Espada da Forja Negra"):
+                    contador+=1
+                    RecompensaBau(0)
+            if(contador==0):
+                print("\nAdquiriu Espada da Forja Negra")
+                inventario.append("Espada da Forja Negra")
+        case 11:
+            for i in range(len(inventario)):
+                if(inventario[i]=="Adaga do Rei dos Ladrões"):
+                    contador+=1
+                    RecompensaBau(0)
+            if(contador==0):
+                print("\nAdquiriu Adaga do Rei dos Ladrões")
+                inventario.append("Adaga do Rei dos Ladrões")
+        case 12:
+            for i in range(len(inventario)):
+                if(inventario[i]=="Cajado Celestial"):
+                    contador+=1
+                    RecompensaBau(0)
+            if(contador==0):
+                print("\nAdquiriu Cajado Celestial")
+                inventario.append("Cajado Celestial")
 
     time.sleep(3)
     if(contador!=0):
@@ -940,7 +1060,9 @@ def RecompensaDes():
     x = random.randint(1,10)
     if(x<=4):
         AtribuirItem(1)
-    elif(x<=6):
+    elif(x==5):
+        AtribuirItem(6)
+    elif(x==6):
         AtribuirItem(6)
     elif(x==7):
         AtribuirItem(8)
@@ -951,6 +1073,62 @@ def RecompensaDes():
     else:
         AtribuirItem(5)
 
+def Quebrar(retornoItem):
+    quebrar=random.randint(0,1)
+    if(quebrar==1):
+        print("\nVocê ouve o som de vidro se estilhaçando dentro do baú, parece que você quebrou sua recompensa...")
+        return 0
+    else:
+        return retornoItem
+    
+def RecompensaBau(tentouAtacar): #0=não, 1=sim
+    x=random.randint(1,10)
+    if(x==1) and (tentouAtacar==1):
+        AtribuirItem(Quebrar(1))
+    elif(x==1) and (tentouAtacar==0):
+        AtribuirItem(1)
+    elif(x<=2):
+        AtribuirItem(2)
+    elif(x==3) and (tentouAtacar==1):        
+        AtribuirItem(Quebrar(6))
+    elif(x==3) and (tentouAtacar==0):
+        AtribuirItem(6)
+    elif(x==4):
+        AtribuirItem(4)
+    elif(x==5):
+        AtribuirItem(5)
+    elif(x==6):
+        AtribuirItem(7)
+    elif(x==7):
+        AtribuirItem(9)
+    
+    #Itens amaldiçoados------------
+    elif(x==8):
+        AtribuirItem(10)
+    elif(x==9):
+        AtribuirItem(11)
+    elif(x==10):
+        AtribuirItem(12)
+    #--------------------------
+    else:
+        AtribuirItem(3)
+    
+#Bau, simples, rápido e direto
+def Bau():
+    print("\nUm baú feito de madeira, com extremidades reforçadas a aço e uma fechadura enferrujada, aparece diante de você")
+    op=int(input("\nO que deseja fazer?\n1 - Abrir o baú  |  2 - Atacar  |  3 - Sair\n"))
+
+    if(op==1):
+        print("\nO cheiro de mofo contamina o ambiente... Você encontra um item!")     
+        RecompensaBau(0)
+    elif(op==2):
+        RecompensaBau(1)
+    elif(op==3):
+        return
+
+
+
+        
 
 Menu()
 GerarMapa(tamanho)
@@ -982,6 +1160,10 @@ while(op!=0 and vida>0):
         op=Armadilha()
         salas[y][x]=1
 
+    if(salas[y][x]==6):
+        PontoSala()
+        Bau()
+        salas[y][x]=1
     if(salas[y][x]==4 or salas[y][x]==5):
         PontoSala()
         Desafio()
@@ -998,7 +1180,9 @@ while(op!=0 and vida>0):
         if(op==4):
             Descansar()
         else:
-            print(...)
-            time.sleep(2)
+            print("...")
+            time.sleep(1)
 
+ApagarCs()
 print("\nGAME OVER\n")
+print("TOTAL SCORE:", pontos,"\n")
