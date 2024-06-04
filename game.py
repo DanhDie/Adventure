@@ -103,7 +103,7 @@ def Menu():
 
     elif(op==2):
         ApagarCs()
-        print("O jogo consiste em se mover pela Dungeon e ganhar pontos dados pela salas andadas. As salas possuem pontos variados, normalmente salas mais dificis darão mais pontos. Para avançar para o proximo andar da Dungeon deve encontrar a sala com maior pontos.0")
+        print("O jogo consiste em se mover pela Dungeon e ganhar pontos dados pela salas andadas. As salas possuem pontos variados, normalmente salas mais dificis darão mais pontos. Para avançar para o proximo andar da Dungeon deve encontrar a sala com maior pontos.")
         aux = input("Voltar para o menu ->\n")
         Menu()
 
@@ -1379,4 +1379,6 @@ while(op!=0 and vida>0):
 
 ApagarCs()
 print("\nGAME OVER\n")
+time.sleep(1)
+print("Jogo criado por Daniel Dwulatka e Gabriel Covalski\n")
 print("TOTAL SCORE:", pontos,"\n")
