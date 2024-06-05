@@ -594,7 +594,7 @@ def CriarInimigo():
     global vidaInimigo, dtInimigo, danoInimigo, modificadorInimigo, esquivaInimigo
 
     vidaInimigo=random.randint(4,6)*random.randint(1,3)
-    dtInimigo=random.randint(10,12)+random.randint(1,3)
+    dtInimigo=random.randint(7,9)+random.randint(1,3)
     danoInimigo=random.randint(1,3)+5
     modificadorInimigo=random.randint(0,1)
     esquivaInimigo=random.randint(0,2)
@@ -666,7 +666,7 @@ def Combate():
         ApagarCs()
         AtaqueInimigo()
 
-        if(vida<=0):
+        if not (vida>0):
             return 0
         
     print("\nVocê venceu a batalha!")
@@ -682,6 +682,7 @@ def Combate():
     print("Você recebeu %d pontos!"%(exp))
     AddPontos(exp)
     input("\nEnter para continuar ->\n")
+    return
 
 #Armadilhas
 def Armadilha():
@@ -699,17 +700,19 @@ def Armadilha():
         input("\nEnter para continuar ->\n")
         op=Combate()
         return op
+    
     if(op==2):
         print("Sua intuição estava correta, era um MÍMICO!")
         vidaInimigo=RolandoDados(vidaInimigo, dtInimigo, dadoMaximo, modificador, 0)
         
         if(vidaInimigo<=0):
             return
+        
         input("\nEnter para continuar ->\n")
         op=Combate()
-        RecompensaBau(0)
+        if(op):
+            RecompensaBau(0)
         return op
-    
  #
 
 #Desafios
@@ -1187,7 +1190,7 @@ def GerarBoss():
                                                                       ░░        ████▓▓▓▓██      ██▓▓▓▓        ▒▒▓▓▓▓▓▓                                                            
 """)
         vidaInimigo=40
-        dtInimigo=18
+        dtInimigo=15
         danoInimigo=12
         modificadorInimigo=4
         esquivaInimigo=20
@@ -1224,7 +1227,7 @@ def GerarBoss():
         input("Pressione enter para continuar ->")
 
         vidaInimigo=1
-        dtInimigo=15
+        dtInimigo=12
         danoInimigo=8
         modificadorInimigo=2
         esquivaInimigo=20
@@ -1250,10 +1253,12 @@ def GerarBoss():
                 ApagarCs()
                 pontoFracoCheck=TesteInteligencia()
             else:
-                (...)
+                print("...")
 
             if(pontoFracoCheck==1):
                 break
+            else:
+                AtaqueInimigo()
 
     if(tipo==3):
         #Boss de Destreza
@@ -1301,7 +1306,7 @@ def GerarBoss():
         dtInimigo=19
         danoInimigo=10
         modificadorInimigo=2
-        esquivaInimigo=0
+        esquivaInimigo=-5
         expbosscheck=1
 
         print("Ele parece mais lento, mas mais resistente que você.")
@@ -1342,23 +1347,24 @@ while(op!=0 and vida>0):
         ProximoAndar()
         
 
-    if(salas[y][x]==8):
+    elif(salas[y][x]==8):
         PontoSala()
         CriarInimigo()
         op=Combate()
         salas[y][x]=1
 
-    if(salas[y][x]==7):
+    elif(salas[y][x]==7):
         PontoSala()
         CriarInimigo()
         op=Armadilha()
         salas[y][x]=1
 
-    if(salas[y][x]==6):
+    elif(salas[y][x]==6):
         PontoSala()
         Bau()
         salas[y][x]=1
-    if(salas[y][x]==4 or salas[y][x]==5):
+
+    elif(salas[y][x]==4 or salas[y][x]==5):
         PontoSala()
         Desafio()
         salas[y][x]=1
